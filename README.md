@@ -1,3 +1,15 @@
-# CodeAnalysis
+# 🚀 Welcome to your new awesome project!
 
-[Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/same-lin/CodeAnalysis)
+This project has been created using **webpack-cli**, you can now run
+
+```
+npm run build
+```
+
+or
+
+```
+yarn build
+```
+
+to bundle your application

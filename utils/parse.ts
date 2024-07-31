@@ -59,7 +59,7 @@ export const parseVue = function (fileName: string) {
       lines: children
         .filter((child) => child.tag === 'script' || child.tag === 'template')
         .map((child) => child.loc.end.line - child.loc.start.line)
-        .reduce((a, b) => a + b),
+        .reduce((a, b) => a + b, 0),
     },
   };
 };
