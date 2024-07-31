@@ -1,22 +1,26 @@
-const path = require('path');
+const path = require('path')
 
 module.exports = {
-  entry: './core/index.ts',
+  mode: 'production',
+  entry: './src/core/index.ts',
   module: {
     rules: [
       {
         test: /\.ts$/,
         use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-    ],
+        include: /src/
+      }
+    ]
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js']
   },
   output: {
     filename: 'codeAnalysis.js',
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'build')
   },
   target: 'node',
-};
+  optimization: {
+    usedExports: true,
+  },
+}
