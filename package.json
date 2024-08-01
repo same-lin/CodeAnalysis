@@ -15,8 +15,10 @@
   "license": "ISC",
   "dependencies": {
     "@vue/compiler-dom": "^3.4.34",
+    "commander": "^12.1.0",
     "glob": "^11.0.0",
     "js-md5": "^0.8.3",
+    "minimatch": "^10.0.1",
     "ramda": "^0.30.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",

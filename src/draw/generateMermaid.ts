@@ -28,7 +28,7 @@ export const generateMermaid = (imports: Imports) => {
     const name = fileName.startsWith(prefix)
       ? fileName.slice(prefix.length)
       : fileName;
-    const dirList = name.split(/[/\\]+/);
+    const dirList = name.split(/[/\\]+/).map(item => item.trim());
     const nodeText = dirList[dirList.length - 1];
     const nodeName = dirList.join('_');
     let _graph = subgraph;

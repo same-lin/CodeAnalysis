@@ -3,7 +3,8 @@ import path from 'path'
 import { parseFile } from '../utils/parse'
 import fs from 'fs'
 import { MatchPath } from 'tsconfig-paths'
-import { EXTENSIONS } from '../share/constant'
+import { EXTENSIONS, INCLUDES } from '../share/constant'
+import { minimatch } from 'minimatch';
 
 export interface ImportNode {
   lines: number
@@ -12,7 +13,6 @@ export interface ImportNode {
 export type Imports = Record<string, ImportNode>
 
 const resolveFilePath = (curPath: string, importPath: string, tsMatch?: MatchPath) => {
-
   const matchPath = tsMatch?.(importPath)
   if (matchPath) {
     return matchPath
@@ -27,7 +27,14 @@ const resolveFilePath = (curPath: string, importPath: string, tsMatch?: MatchPat
   return null
 }
 
-export const getImportsByDfs = (filePath: string, imports?: Imports, tsMatch?: MatchPath) => {
+const isPathValid = (fullPath: string, patterns?: string[]) => {
+  return (patterns || INCLUDES).some(pattern => minimatch(fullPath, pattern)) && fs.existsSync(fullPath);
+}
+
+export const getImportsByDfs = (filePath: string, imports: Imports, config: {
+  includes?: string[];
+  tsMatch?: MatchPath;
+}) => {
   const importsObject = imports || {}
   const filePathName = formatPath(filePath);
   if (importsObject[filePathName]) {
@@ -40,14 +47,14 @@ export const getImportsByDfs = (filePath: string, imports?: Imports, tsMatch?: M
       const imports: string[] =
         // @ts-ignore
         result.ast?.imports.map((im) => {
-          const targetImport = resolveFilePath(filePathName, im.text, tsMatch);
-          return targetImport && formatPath(targetImport);
+          const targetImport = resolveFilePath(filePathName, im.text, config.tsMatch);
+          return targetImport && isPathValid(targetImport, config.includes) && formatPath(targetImport);
         }).filter((x: any) => x) || []
-      importsObject[formatPath(filePathName)] = {
+      importsObject[filePathName] = {
         lines,
         imports
       }
-      imports.forEach((im) => getImportsByDfs(im, importsObject, tsMatch))
+      imports.forEach((im) => getImportsByDfs(im, importsObject, config))
     }
   }
   return importsObject
