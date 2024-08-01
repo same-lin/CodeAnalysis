@@ -47,7 +47,7 @@ export const getImportsByDfs = (filePath: string, imports?: Imports, tsMatch?: M
         lines,
         imports
       }
-      imports.forEach((im) => getImportsByDfs(im, importsObject))
+      imports.forEach((im) => getImportsByDfs(im, importsObject, tsMatch))
     }
   }
   return importsObject
